@@ -1,0 +1,4 @@
+main:
+  - =#: CREATE SCHEMA IF NOT EXISTS test
+  - sql: test_table.sql
+  - sql: test_table2.sql

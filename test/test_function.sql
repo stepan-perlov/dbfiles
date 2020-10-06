@@ -1,0 +1,6 @@
+CREATE OR REPLACE FUNCTION test.function() RETURNS void AS
+$body$
+BEGIN
+    SELECT * FROM test_table;
+END;
+$body$ STABLE SECURITY DEFINER;
