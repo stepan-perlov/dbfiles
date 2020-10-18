@@ -10,3 +10,7 @@ class CounterException(DbfilesException):
 
 class SchemaException(DbfilesException):
     pass
+
+
+class CompilerException(DbfilesException):
+    pass

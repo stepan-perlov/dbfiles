@@ -1,6 +1,0 @@
-CREATE OR REPLACE FUNCTION test.function2() RETURNS void AS
-$body$
-BEGIN
-    SELECT * FROM test_table2;
-END;
-$body$ STABLE SECURITY DEFINER;

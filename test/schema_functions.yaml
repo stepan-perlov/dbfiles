@@ -1,3 +1,0 @@
-statements:
-  - fn: test_function.sql
-  - fn: test_function2.sql

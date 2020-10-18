@@ -1,0 +1,4 @@
+main:
+  - sql: test_table2.sql
+  - sql: test_function2.sql
+  - csv: test_table2_data.csv =# COPY test.table2(key, key2) FROM STDIN WITH CSV

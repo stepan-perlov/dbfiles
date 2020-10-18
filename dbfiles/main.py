@@ -3,8 +3,8 @@ import argparse
 import yaml
 
 from dbfiles.schema import Schema
-from dbfiles.schema import Item
-from dbfiles.result import Result
+from dbfiles.compiler import Compiler
+
 
 
 def parseArgs():
@@ -13,8 +13,7 @@ def parseArgs():
     parser.add_argument("--src-root", dest="srcRoot", default=os.path.abspath(os.getcwd()))
     parser.add_argument("--dst-root", dest="dstRoot", default=os.path.abspath(os.getcwd()))
     parser.add_argument("--schemas", nargs="*", dest="schemas", required=True)
-    parser.add_argument("--name", dest="name", required=True)
-    parser.add_argument("--one-file", dest="oneFile", action="store_true", default=False)
+    parser.add_argument("--force", dest="force", action="store_true", default=False)
     parser.add_argument("--debug", dest="debug", action="store_true", default=False)
 
     return parser.parse_args()
@@ -23,21 +22,14 @@ def parseArgs():
 def main():
     args = parseArgs()
 
-    Schema.setArgs(args)
-    Compiler.setArgs(args)
+    Schema.setRoot(args.srcRoot)
+    compiler = Compiler(args.dstRoot, args.force, args.debug)
 
-    compiler = Compiler.create()
+    for schemaPath in args.schemas:
+        schema = Schema(schemaPath)
+        compiler.add(schema)
 
-    try:
-        for schemaPath in args.schemas:
-            counter = Counter()
-            schema = Schema(counter, schemaPath)
-            schema.parse()
-            compiler.add(schema)
-
-        compiler.make()
-    finally:
-        compiler.onDone()
+    compiler.createEntry()
 
 if __name__ == "__main__":
     main()

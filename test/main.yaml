@@ -1,0 +1,4 @@
+main:
+  - =#: CREATE SCHEMA IF NOT EXISTS test
+  - include: schema1.yaml
+  - include: test2/schema2.yaml

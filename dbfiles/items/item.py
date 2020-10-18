@@ -1,21 +1,15 @@
 import abc
 
 
-itemMap = {
-    "=#": SqlInline,
-    "sql": SqlFile,
-    "json": JsonFile,
-    "yaml": YamlFile,
-    "csv": CsvFile,
-}
-
 class Item(abc.ABC):
+
+    itemsMap = {}
 
     @staticmethod
     def create(schema, itemDict):
         itemType = list(itemDict.keys())[0]
         itemValue = itemDict[itemType]
-        return itemMap[itemType](schema, itemType, itemValue)
+        return Item.itemsMap[itemType](schema, itemType, itemValue)
 
     @property
     def schema(self):

@@ -1,0 +1,8 @@
+main:
+  - =#: CREATE TABLE config(key text, source text)
+  - yaml: config.yaml =# INSERT INTO config(key, source) VALUES(((('{value}'::jsonb)->'outer')->'inner')->>'key', '{file}')
+
+  - =#: CREATE TABLE item(x int, y int)
+  - json: item.json =# INSERT INTO item(x, y) VALUES((('{value}'::jsonb)->>'x')::int, (('{value}'::jsonb)->>'y')::int)
+
+  - include: ../test3/schema3.yaml

@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION test.function() RETURNS void AS
 $body$
 BEGIN
-    SELECT * FROM test_table;
+    PERFORM 1 FROM test.table;
 END;
-$body$ STABLE SECURITY DEFINER;
+$body$ LANGUAGE plpgsql STABLE SECURITY DEFINER;

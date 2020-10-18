@@ -3,6 +3,7 @@ import yaml
 
 from jsonschema import Draft7Validator
 
+from .counter import Counter
 from .items import Item
 from .errors import SchemaException
 
@@ -17,19 +18,24 @@ Draft7Validator.check_schema(protocol)
 
 class Schema(object):
 
-    validator = Draft7Validator(protocol)
+    _root = os.getcwd()
+    _validator = Draft7Validator(protocol)
 
     @classmethod
-    def setArgs(cls, args):
-        cls._srcRoot = args.srcRoot
+    def setRoot(cls, root):
+        cls._root = root
 
     @property
     def counter(self):
         return self._counter
 
     @property
-    def path(self):
-        return self._path
+    def absPath(self):
+        return self._absPath
+
+    @property
+    def relPath(self):
+        return os.path.relpath(self._absPath, Schema._root)
 
     @property
     def fileName(self):
@@ -47,25 +53,39 @@ class Schema(object):
     def items(self):
         return self._items
 
+    @property
+    def type(self):
+        return self.__class__.__name__.lower()
 
-    def __init__(self, counter, schemaPath):
-        self._counter = counter
-        self._path = os.path.abspath(os.path.join(Schema._srcRoot, schemaPath))
-        self._fileName = os.path.basename(self._path)
-        self._dir = os.path.dirname(self._path)
+    def __init__(self, schemaPath, parents=[]):
+        self._absPath = os.path.abspath(os.path.join(Schema._root, schemaPath))
+        self._fileName = os.path.basename(self._absPath)
+        self._dir = os.path.dirname(self._absPath)
 
-        with open(self._path) as fstream:
+        if self.relPath in parents:
+            raise SchemaException("Circular include schema {}, parents={}".format(
+                self.relPath,
+                parents
+            ))
+
+        with open(self._absPath) as fstream:
             self._data = yaml.load(fstream, Loader=yaml.FullLoader)
 
-        if not Schema.validator.is_valid(self._data):
-            error = "Invalid schema {}".format(self._path)
-            for err in Schema.validator.iter_errors(self._data):
+        if not Schema._validator.is_valid(self._data):
+            error = "Invalid schema {}".format(self._absPath)
+            for err in Schema._validator.iter_errors(self._data):
                 print("Error: {}".format(err.message))
                 print("Context: {}".format(err.absolute_schema_path))
 
             raise SchemaException(error)
 
-        self._items = []
+        self._counter = Counter()
 
-    def parse(self):
-        self._items = [Item.create(self, itemDict) for itemDict in self._data["main"]]
+        self._items = []
+        for itemDict in self._data["main"]:
+            if "include" in itemDict:
+                subSchemaAbsPath = os.path.abspath(os.path.join(self._dir, itemDict["include"]))
+                subSchemaRelPath = os.path.relpath(subSchemaAbsPath, Schema._root)
+                self._items.append(Schema(subSchemaRelPath, parents + [self.relPath]))
+            else:
+                self._items.append(Item.create(self, itemDict))

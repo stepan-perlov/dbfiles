@@ -6,7 +6,7 @@ from dbfiles import __version__
 setup(
     name="dbfiles",
     version=__version__,
-    description="dbfiles - util for archive you sql files into makeself archive",
+    description="dbfiles - util for compile you sql files, csv data files, yaml, json configuration into catalog of sql files",
     license='MIT',
     author="Stepan Perlov",
     author_email="stepanperlov@gmail.com",
@@ -14,7 +14,7 @@ setup(
         "PyYAML",
         "jsonschema",
     ],
-    packages=["dbfiles"],
+    packages=["dbfiles", "dbfiles.items"],
     entry_points={
         "console_scripts": [
             "dbfiles = dbfiles.main:main",
@@ -22,8 +22,7 @@ setup(
     },
     package_data={
         "dbfiles": [
-            "makeself/*",
-            "protocol.yaml",
+            "schema.yaml",
         ]
     },
     python_requires=">=3",

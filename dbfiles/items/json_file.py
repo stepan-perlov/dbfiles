@@ -5,4 +5,4 @@ class JsonFile(ItemWithQuery):
     def getContent(self):
         with open(self._absFilePath) as fstream:
             data = json.load(fstream)
-        return self._query.format(file=self._srcPath, value=data)
+        return self._query.format(file=self._srcPath, value=json.dumps(data))
