@@ -8,6 +8,7 @@ setup(
     version=__version__,
     description="dbfiles - util for compile you sql files, csv data files, yaml, json configuration into catalog of sql files",
     license='MIT',
+    url="https://github.com/stepan-perlov/dbfiles",
     author="Stepan Perlov",
     author_email="stepanperlov@gmail.com",
     install_requires=[
