@@ -1,5 +1,18 @@
 # dbfiles
-Compile database files into makeself archive
+dbfiles - util for compile you sql files, csv data files, yaml, json configuration into catalog of sql files.
+Creates entry.sql for installation files into database.
+
+**install**
+
+```
+sudo pip3 install dbfiles
+```
+
+**Example of usage**
+```
+dbfiles --src-root test --dst-root build/test --schemas main.yaml
+psql -U postgres -d test -f build/test/entry.sql
+```
 
 ## lxc init
 

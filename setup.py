@@ -14,7 +14,10 @@ setup(
         "PyYAML",
         "jsonschema",
     ],
-    packages=["dbfiles", "dbfiles.items"],
+    packages=[
+        "dbfiles",
+        "dbfiles.items"
+    ],
     entry_points={
         "console_scripts": [
             "dbfiles = dbfiles.main:main",
