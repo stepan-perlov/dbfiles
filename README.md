@@ -23,23 +23,11 @@ lxc config device add dbfiles project disk source=$PWD path=/home/ubuntu/dbfiles
 lxc start dbfiles
 ```
 
-## lxc login
+## lxc login, install deps
 
 ```bash
 lxc exec dbfiles -- sudo --login --user ubuntu
-```
-
-## Developer environment
-
-```bash
-sudo apt update
-sudo apt install python3-pip
-
-sudo pip3 install jsonschema
-sudo pip3 install PyYAML
-
-sudo pip3 install invoke
-sudo pip3 install twine
+./dbfiles/deps.sh
 ```
 
 ## Run script in source code from project root
