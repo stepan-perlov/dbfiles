@@ -29,15 +29,15 @@ lxc start dbfiles
 lxc exec dbfiles -- sudo --login --user ubuntu
 ```
 
-## Dbfiles environment
-```bash
-sudo pip3 install jsonschema
-sudo pip3 install PyYAML
-```
-
 ## Developer environment
 
 ```bash
+sudo apt update
+sudo apt install python3-pip
+
+sudo pip3 install jsonschema
+sudo pip3 install PyYAML
+
 sudo pip3 install invoke
 sudo pip3 install twine
 ```
@@ -45,7 +45,11 @@ sudo pip3 install twine
 ## Run script in source code from project root
 
 ```bash
+# Root schema from file
 PYTHONPATH=$PWD python3 ./dbfiles/main.py --src-root test --dst-root build/test --schemas main.yaml
+
+# Inline root schema
+PYTHONPATH=$PWD python3 ./dbfiles/main.py --src-root test --dst-root build/test --inlineSchemas '{"filePath": "main.yaml", "data": {"main": [{"=#": "CREATE SCHEMA IF NOT EXISTS test"}, {"include": "schema1.yaml"}, {"include": "test2/schema2.yaml"}]}}'
 ```
 
 ## Example of schema.yaml

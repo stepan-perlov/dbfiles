@@ -27,6 +27,7 @@ setup(
     package_data={
         "dbfiles": [
             "schema.yaml",
+            "json_inline.yaml",
         ]
     },
     python_requires=">=3",
